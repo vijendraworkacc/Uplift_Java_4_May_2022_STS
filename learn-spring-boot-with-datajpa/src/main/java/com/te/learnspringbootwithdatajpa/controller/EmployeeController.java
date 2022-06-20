@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.te.learnspringbootwithdatajpa.entity.dto.EmployeeDto;
+import com.te.learnspringbootwithdatajpa.exceptions.EmployeeNotFoundException;
 import com.te.learnspringbootwithdatajpa.response.GeneralResponse;
 import com.te.learnspringbootwithdatajpa.service.EmployeeService;
 
@@ -36,11 +37,15 @@ public class EmployeeController {
 
 	@GetMapping(path = "/employee/{employeeId}")
 	public ResponseEntity<GeneralResponse> getEmployee(@PathVariable String employeeId) {
-		return ResponseEntity.ok()
-				.body(new GeneralResponse(
-						ServletUriComponentsBuilder.fromCurrentContextPath().path("/employees/" + employeeId)
-								.toUriString(),
-						HttpStatus.OK, null, "Data provided!", employeeService.findByEmployeeId(employeeId)));
+		EmployeeDto employeeDto = employeeService.findByEmployeeId(employeeId);
+		if (employeeDto != null) {
+			return ResponseEntity.ok()
+					.body(new GeneralResponse(ServletUriComponentsBuilder.fromCurrentContextPath()
+							.path("/employees/" + employeeId).toUriString(), HttpStatus.OK, null, "Data provided!",
+							employeeDto));
+		}
+		throw new EmployeeNotFoundException(
+				"Employee with given employee id " + employeeId + " is not present in database!");
 	}
 
 	@PostMapping(path = "/employee")

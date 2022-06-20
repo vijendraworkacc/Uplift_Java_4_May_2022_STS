@@ -36,8 +36,9 @@ public class EmployeeServiceImplementation implements EmployeeService {
 				addressDtos.add(addressDto);
 			});
 			employeeDto.setAddresses(addressDtos);
+			return employeeDto;
 		}
-		return employeeDto;
+		return null;
 	}
 
 	@Override
