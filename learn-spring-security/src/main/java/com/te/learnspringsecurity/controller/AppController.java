@@ -2,6 +2,8 @@ package com.te.learnspringsecurity.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.te.learnspringsecurity.entity.dto.EmployeeDto;
 import com.te.learnspringsecurity.entity.dto.LoginDto;
-import com.te.learnspringsecurity.entity.dto.MentorDto;
 import com.te.learnspringsecurity.jwt.utils.JwtUtils;
 import com.te.learnspringsecurity.response.GeneralResponse;
 
@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AppController {
 
 	private final JwtUtils jwtUtils;
+	private final AuthenticationManager authenticationManager;
 
 	/* PUBLIC API */
 	@GetMapping(path = "")
@@ -35,8 +36,10 @@ public class AppController {
 	/* PUBLIC API */
 	@PostMapping(path = "/login")
 	public ResponseEntity<GeneralResponse> login(@RequestBody LoginDto login) {
-		log.info("In controller method login(). Username passed {} and password passed {}", login.getUsername(), login.getPassword());
-		// TODO: Login to authenticate a user!
+		log.info("In controller method login(). Username passed {} and password passed {}", login.getUsername(),
+				login.getPassword());
+		authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
 		String token = jwtUtils.generateToken(login.getUsername());
 		return ResponseEntity.ok().body(new GeneralResponse(token, HttpStatus.OK, null, null, "Login!"));
 	}

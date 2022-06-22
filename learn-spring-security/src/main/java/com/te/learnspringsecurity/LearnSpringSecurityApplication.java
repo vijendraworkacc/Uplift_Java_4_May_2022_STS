@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.te.learnspringsecurity.entity.Admin;
 import com.te.learnspringsecurity.entity.AppUser;
@@ -30,6 +31,8 @@ public class LearnSpringSecurityApplication {
 	private final EmployeeRepository employeeRepository;
 	private final AppUserRepository appUserRepository;
 	private final RoleRepository roleRepository;
+	
+	private final PasswordEncoder passwordEncoder;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LearnSpringSecurityApplication.class, args);
@@ -57,7 +60,7 @@ public class LearnSpringSecurityApplication {
 				adminRepository.save(admin);
 				AppUser appUser = new AppUser();
 				appUser.setUsername(admin.getAdminId());
-				appUser.setPassword("qwerty");
+				appUser.setPassword(passwordEncoder.encode("qwerty"));
 				appUser.setRoles(Arrays.asList(adminRole));
 				appUserRepository.save(appUser);
 
@@ -68,7 +71,7 @@ public class LearnSpringSecurityApplication {
 				mentorRepository.save(mentor);
 				AppUser appUser2 = new AppUser();
 				appUser2.setUsername(mentor.getMentorId());
-				appUser2.setPassword("qwerty");
+				appUser2.setPassword(passwordEncoder.encode("qwerty"));
 				appUser2.setRoles(Arrays.asList(mentorRole));
 				appUserRepository.save(appUser2);
 
@@ -79,7 +82,7 @@ public class LearnSpringSecurityApplication {
 				employeeRepository.save(employee);
 				AppUser appUser3 = new AppUser();
 				appUser3.setUsername(employee.getEmployeeId());
-				appUser3.setPassword("qwerty");
+				appUser3.setPassword(passwordEncoder.encode("qwerty"));
 				appUser3.setRoles(Arrays.asList(employeeRole));
 				appUserRepository.save(appUser3);
 			}
