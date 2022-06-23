@@ -21,9 +21,7 @@ import com.te.learnspringsecurity.repository.MentorRepository;
 import com.te.learnspringsecurity.repository.RoleRepository;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @SpringBootApplication
 @RequiredArgsConstructor
 public class LearnSpringSecurityApplication {
@@ -33,21 +31,18 @@ public class LearnSpringSecurityApplication {
 	private final EmployeeRepository employeeRepository;
 	private final AppUserRepository appUserRepository;
 	private final RoleRepository roleRepository;
-
+	
 	private final PasswordEncoder passwordEncoder;
 
 	public static void main(String[] args) {
-		log.error("Application is going to start.");
 		SpringApplication.run(LearnSpringSecurityApplication.class, args);
 	}
 
 	@Bean
 	public CommandLineRunner saveInDb() {
 		return a -> {
-			log.error("CommandLineRunner getting executed.");
 			Optional<Role> findByRoleName = roleRepository.findByRoleName("ROLE_ADMIN");
 			if (!findByRoleName.isPresent()) {
-				log.error("Data not present in database, so saving data in database.");
 				Role adminRole = new Role();
 				adminRole.setRoleName("ROLE_ADMIN");
 				Role mentorRole = new Role();

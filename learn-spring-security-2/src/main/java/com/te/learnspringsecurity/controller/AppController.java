@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping(path = "/api")
 @RequiredArgsConstructor
+// @CrossOrigin (origins = "*" , exposedHeaders = "**")
 public class AppController {
 
 	private final JwtUtils jwtUtils;
@@ -36,7 +37,7 @@ public class AppController {
 	/* PUBLIC API */
 	@PostMapping(path = "/login")
 	public ResponseEntity<GeneralResponse> login(@RequestBody LoginDto login) {
-		log.error("In controller method login(). Username passed {} and password passed {}", login.getUsername(),
+		log.info("In controller method login(). Username passed {} and password passed {}", login.getUsername(),
 				login.getPassword());
 		authenticationManager
 				.authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
