@@ -8,6 +8,7 @@ class UnitTestingWithMockithoApplicationTests {
 
 	@Test
 	void contextLoads() {
+		
 	}
 
 }
